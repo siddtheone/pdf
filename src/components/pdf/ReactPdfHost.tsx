@@ -44,40 +44,29 @@ export default function ReactPdfHost({
       onLoadSuccess={onLoadSuccess}
       onLoadError={onLoadError}
       loading={<div className="text-sm opacity-70">Loading…</div>}
+      className="overflow-y-auto overflow-x-hidden max-h-[90vh]"
     >
       {layout === "single" ? (
         <Page
-          key={currentPage}
           pageNumber={currentPage}
-          className="shadow-xl rounded-lg overflow-hidden"
+          className="shadow-xl rounded-lg h-[90vh] flex items-center"
           renderTextLayer={false}
           renderAnnotationLayer={false}
-          width={undefined}
-          height={undefined}
-          scale={1.5}
         />
       ) : (
         <div className="flex flex-row items-center justify-center gap-4">
           <Page
-            key={leftRightPages.left}
             pageNumber={leftRightPages.left}
-            className="shadow-xl rounded-lg overflow-hidden"
+            className="shadow-xl rounded-lg h-[90vh] flex items-center"
             renderTextLayer={false}
             renderAnnotationLayer={false}
-            width={undefined}
-            height={undefined}
-            scale={1.5}
           />
           {!!numPages && leftRightPages.right <= numPages && (
             <Page
-              key={leftRightPages.right}
               pageNumber={leftRightPages.right}
-              className="shadow-xl rounded-lg overflow-hidden"
+              className="shadow-xl rounded-lg h-[90vh] flex items-center"
               renderTextLayer={false}
               renderAnnotationLayer={false}
-              width={undefined}
-              height={undefined}
-              scale={1.5}
             />
           )}
         </div>

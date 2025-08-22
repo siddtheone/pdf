@@ -141,55 +141,48 @@ export default function PdfWallpaper() {
 
   return (
     <>
-      {/* Canvas area */}
-      <div className="flex items-center justify-center">
-        {pdfData ? (
-          <div className="flex w-full items-center justify-center overflow-y-auto overflow-x-hidden">
-            <div className="relative isolate">
-              <div
-                className={`flex ${
-                  layout === "spread" ? "flex-row gap-4" : "flex-col"
-                } items-center justify-center max-h-[90vh] overflow-y-auto overflow-x-hidden`}
-              >
-                <ReactPdfHost
-                  data={pdfData}
-                  layout={layout}
-                  currentPage={currentPage}
-                  leftRightPages={leftRightPages}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  onLoadError={onDocumentLoadError}
-                  numPages={numPages}
-                />
-              </div>
+      {pdfData ? (
+        <div className="flex items-stretch justify-center gap-4 py-16">
+          <button
+            onClick={goPrev}
+            disabled={!canPrev}
+            className="w-12 rounded-xl disabled:opacity-30 outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/60 bg-gradient-to-b from-fuchsia-500/20 to-sky-500/20 hover:from-fuchsia-500/30 hover:to-sky-500/30 backdrop-blur border border-foreground/15 shadow-lg text-2xl"
+          >
+            <span className="pointer-events-none select-none">‹</span>
+          </button>
 
-              {/* Side navigation overlays matching the pages height */}
-              <button
-                onClick={goPrev}
-                disabled={!canPrev}
-                className="absolute left-[-3.5rem] top-0 bottom-0 my-auto w-12 rounded-xl disabled:opacity-30 outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/60 bg-gradient-to-b from-fuchsia-500/20 to-sky-500/20 hover:from-fuchsia-500/30 hover:to-sky-500/30 backdrop-blur border border-foreground/15 shadow-lg text-2xl"
-              >
-                <span className="pointer-events-none select-none">‹</span>
-              </button>
-              <button
-                onClick={goNext}
-                disabled={!canNext}
-                className="absolute right-[-3.5rem] top-0 bottom-0 my-auto w-12 rounded-xl disabled:opacity-30 outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 bg-gradient-to-b from-sky-500/20 to-fuchsia-500/20 hover:from-sky-500/30 hover:to-fuchsia-500/30 backdrop-blur border border-foreground/15 shadow-lg text-2xl"
-              >
-                <span className="pointer-events-none select-none">›</span>
-              </button>
-            </div>
+          <div
+            className={`flex ${
+              layout === "spread" ? "flex-row gap-4" : "flex-col"
+            } items-center justify-center`}
+          >
+            <ReactPdfHost
+              data={pdfData}
+              layout={layout}
+              currentPage={currentPage}
+              leftRightPages={leftRightPages}
+              onLoadSuccess={onDocumentLoadSuccess}
+              onLoadError={onDocumentLoadError}
+              numPages={numPages}
+            />
           </div>
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="text-center opacity-70">
-              <div className="mb-2 text-base">Open a PDF to get started</div>
-              <div className="text-sm">
-                Your last document and position will be remembered
-              </div>
-            </div>
+
+          <button
+            onClick={goNext}
+            disabled={!canNext}
+            className="w-12 rounded-xl disabled:opacity-30 outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60 bg-gradient-to-b from-sky-500/20 to-fuchsia-500/20 hover:from-sky-500/30 hover:to-fuchsia-500/30 backdrop-blur border border-foreground/15 shadow-lg text-2xl"
+          >
+            <span className="pointer-events-none select-none">›</span>
+          </button>
+        </div>
+      ) : (
+        <div className="text-center">
+          <div className="mb-2 text-base">Open a PDF to get started</div>
+          <div className="text-sm">
+            Your last document and position will be remembered
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {overlay && (
         <div
@@ -213,9 +206,10 @@ export default function PdfWallpaper() {
           </label>
           <button
             onClick={toggleLayout}
+            disabled={numPages === 1}
             className="rounded-md bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 px-3 py-1.5 text-sm hover:from-emerald-500/30 hover:to-cyan-500/30"
           >
-            {layout === "single" ? "Two-Page" : "Single"}
+            {layout === "single" ? "Two-Page" : "One-Page"}
           </button>
           <button
             onClick={toggleOverlay}
