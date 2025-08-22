@@ -1,6 +1,6 @@
 // Google Analytics configuration
 // Replace 'G-XXXXXXXXXX' with your actual Google Analytics Measurement ID
-export const GA_TRACKING_ID = "G-XXXXXXXXXX";
+export const GA_TRACKING_ID = "G-N36ERKP5Z4";
 
 // Initialize Google Analytics
 export const initGA = () => {

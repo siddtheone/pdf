@@ -68,20 +68,6 @@ export default function PdfWallpaper() {
     },
     [pdfData, currentPage, layout, overlay]
   );
-
-  const handleFileChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      const buffer = await file.arrayBuffer();
-      setPdfData(buffer);
-      setCurrentPage(1);
-      await persist({ pdfData: buffer, lastPage: 1 });
-      trackPdfAction("open");
-    },
-    [persist]
-  );
-
   const goPrev = useCallback(() => {
     setCurrentPage((prev) => {
       const delta = layout === "spread" ? 2 : 1;
@@ -117,6 +103,20 @@ export default function PdfWallpaper() {
       return next;
     });
   }, [persist]);
+
+  const handleFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const buffer = await file.arrayBuffer();
+      setPdfData(buffer);
+      setCurrentPage(1);
+      if (layout === "spread") toggleLayout();
+      await persist({ pdfData: buffer, lastPage: 1 });
+      trackPdfAction("open");
+    },
+    [persist, toggleLayout, layout]
+  );
 
   const toggleOverlay = useCallback(() => {
     setOverlay((prev) => {
@@ -207,7 +207,7 @@ export default function PdfWallpaper() {
           <button
             onClick={toggleLayout}
             disabled={numPages === 1}
-            className="rounded-md bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 px-3 py-1.5 text-sm hover:from-emerald-500/30 hover:to-cyan-500/30"
+            className="rounded-md bg-gradient-to-br disabled:opacity-30 from-emerald-500/20 to-cyan-500/20 px-3 py-1.5 text-sm hover:from-emerald-500/30 hover:to-cyan-500/30"
           >
             {layout === "single" ? "Two-Page" : "One-Page"}
           </button>

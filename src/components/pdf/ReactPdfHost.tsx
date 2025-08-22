@@ -38,6 +38,12 @@ export default function ReactPdfHost({
 
   if (!data) return null;
 
+  const commonProps = {
+    width: 550,
+    renderAnnotationLayer: false,
+    renderTextLayer: false,
+  };
+
   return (
     <Document
       file={fileBlob}
@@ -47,27 +53,12 @@ export default function ReactPdfHost({
       className="overflow-y-auto overflow-x-hidden max-h-[90vh]"
     >
       {layout === "single" ? (
-        <Page
-          pageNumber={currentPage}
-          className="shadow-xl rounded-lg h-[90vh] flex items-center"
-          renderTextLayer={false}
-          renderAnnotationLayer={false}
-        />
+        <Page pageNumber={currentPage} {...commonProps} />
       ) : (
         <div className="flex flex-row items-center justify-center gap-4">
-          <Page
-            pageNumber={leftRightPages.left}
-            className="shadow-xl rounded-lg h-[90vh] flex items-center"
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-          />
+          <Page pageNumber={leftRightPages.left} {...commonProps} />
           {!!numPages && leftRightPages.right <= numPages && (
-            <Page
-              pageNumber={leftRightPages.right}
-              className="shadow-xl rounded-lg h-[90vh] flex items-center"
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-            />
+            <Page pageNumber={leftRightPages.right} {...commonProps} />
           )}
         </div>
       )}
