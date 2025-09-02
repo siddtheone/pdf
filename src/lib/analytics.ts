@@ -2,6 +2,13 @@
 // Replace 'G-XXXXXXXXXX' with your actual Google Analytics Measurement ID
 export const GA_TRACKING_ID = "G-N36ERKP5Z4";
 
+// EU GDPR Compliance Notice
+// This application tracks user interactions for analytics purposes.
+// By using this application, you consent to the collection of anonymous usage data.
+// Data collected includes: PDF interactions (open, navigate, layout changes, overlay toggles)
+// No personal information or PDF content is transmitted or stored.
+// You can disable tracking by setting GA_TRACKING_ID to an empty string.
+
 // Initialize Google Analytics
 export const initGA = () => {
   if (
@@ -26,7 +33,7 @@ export const initGA = () => {
 
   gtag("js", new Date());
   gtag("config", GA_TRACKING_ID, {
-    page_title: "PDF Wallpaper",
+    page_title: "PDF Wallpaper Viewer",
     page_location: window.location.href,
   });
 };
@@ -72,7 +79,7 @@ export const trackEvent = (
 
 // Track PDF interactions
 export const trackPdfAction = (
-  action: "open" | "navigate" | "layout_change" | "overlay_toggle"
+  action: "open" | "navigate prev" | "navigate next" | "overlay_toggle"
 ) => {
   trackEvent(action, "pdf_interaction", action);
 };

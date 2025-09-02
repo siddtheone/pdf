@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import CssBaseline from "@mui/material/CssBaseline";
+import { ClientThemeProvider } from "@/components/ClientThemeProvider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PDF Wallpaper",
-  description: "PDF Wallpaper by Siddharth",
+  title: "PDF Wallpaper Viewer",
+  description: "A beautiful PDF viewer for desktop wallpaper",
 };
 
 export default function RootLayout({
@@ -24,10 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex items-center justify-center h-screen overflow-hidden`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ClientThemeProvider>
+          <CssBaseline />
+          {children}
+        </ClientThemeProvider>
       </body>
     </html>
   );

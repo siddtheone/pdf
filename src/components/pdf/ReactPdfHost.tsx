@@ -1,29 +1,32 @@
 "use client";
 
 import { Document, Page, pdfjs } from "react-pdf";
-import { useEffect, useMemo } from "react";
-
-type LayoutMode = "single" | "spread";
+import { useEffect, useRef } from "react";
+import { OnDocumentLoadSuccess } from "react-pdf/dist/shared/types.js";
+import "./ReactPdfHost.css";
 
 type Props = {
-  data?: ArrayBuffer;
-  layout: LayoutMode;
+  file?: ArrayBuffer | string;
   currentPage: number;
-  leftRightPages: { left: number; right: number };
   onLoadSuccess: (info: { numPages: number }) => void;
   onLoadError?: (error: unknown) => void;
-  numPages?: number;
+  scale: number;
 };
 
 export default function ReactPdfHost({
-  data,
-  layout,
+  file,
   currentPage,
-  leftRightPages,
   onLoadSuccess,
   onLoadError,
-  numPages,
+  scale,
 }: Props) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const difRef = useRef<HTMLDivElement>(null);
+
+  const onLoad: OnDocumentLoadSuccess = (rest) => {
+    onLoadSuccess(rest);
+  };
+
   useEffect(() => {
     try {
       pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -33,35 +36,23 @@ export default function ReactPdfHost({
     } catch {}
   }, []);
 
-  // Prefer Blob over ArrayBuffer to avoid detached buffer issues on re-renders
-  const fileBlob = useMemo(() => (data ? new Blob([data]) : undefined), [data]);
-
-  if (!data) return null;
-
-  const commonProps = {
-    width: 550,
-    renderAnnotationLayer: false,
-    renderTextLayer: false,
-  };
-
   return (
     <Document
-      file={fileBlob}
-      onLoadSuccess={onLoadSuccess}
+      file={file}
+      onLoadSuccess={onLoad}
       onLoadError={onLoadError}
-      loading={<div className="text-sm opacity-70">Loading…</div>}
-      className="overflow-y-auto overflow-x-hidden max-h-[90vh]"
+      loading={<>Loading…</>}
     >
-      {layout === "single" ? (
-        <Page pageNumber={currentPage} {...commonProps} />
-      ) : (
-        <div className="flex flex-row items-center justify-center gap-4">
-          <Page pageNumber={leftRightPages.left} {...commonProps} />
-          {!!numPages && leftRightPages.right <= numPages && (
-            <Page pageNumber={leftRightPages.right} {...commonProps} />
-          )}
-        </div>
-      )}
+      <Page
+        key={currentPage}
+        pageNumber={currentPage}
+        renderTextLayer={false}
+        renderAnnotationLayer={false}
+        inputRef={difRef}
+        canvasRef={canvasRef}
+        scale={scale}
+        className="root"
+      />
     </Document>
   );
 }
