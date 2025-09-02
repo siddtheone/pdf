@@ -111,16 +111,9 @@ export default function PdfWallpaper() {
             sx={{
               borderRadius: 3,
               justifySelf: "stretch",
-              backgroundColor: "rgba(99, 102, 241, 0.1)",
               backdropFilter: "blur(8px)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
               boxShadow: 3,
-              "&:hover": {
-                backgroundColor: "rgba(99, 102, 241, 0.2)",
-              },
-              "&.Mui-disabled": {
-                opacity: 0.3,
-              },
             }}
           >
             <NavigateBefore sx={{ fontSize: 32 }} />
@@ -140,23 +133,23 @@ export default function PdfWallpaper() {
             sx={{
               borderRadius: 3,
               justifySelf: "stretch",
-              backgroundColor: "rgba(99, 102, 241, 0.1)",
               backdropFilter: "blur(8px)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
               boxShadow: 3,
-              "&:hover": {
-                backgroundColor: "rgba(99, 102, 241, 0.2)",
-              },
-              "&.Mui-disabled": {
-                opacity: 0.3,
-              },
             }}
           >
             <NavigateNext sx={{ fontSize: 32 }} />
           </IconButton>
         </Container>
       ) : (
-        <Container maxWidth="sm">
+        <Container
+          maxWidth="sm"
+          sx={{
+            position: "relative",
+            top: "50%",
+            transform: "translateY(-50%)",
+          }}
+        >
           <Paper
             elevation={3}
             sx={{
@@ -169,7 +162,7 @@ export default function PdfWallpaper() {
             <Typography variant="h5" gutterBottom>
               PDF Wallpaper Viewer
             </Typography>
-            <Typography variant="body1" color="text.secondary" paragraph>
+            <Typography variant="body1" color="text.secondary">
               {queryPdfUrl && queryPdfUrl.startsWith("file://")
                 ? "Local file paths are not supported in URLs. Please use the 'Open PDF' button to select a local file."
                 : "Add a PDF file to the URL query parameter or use the 'Open PDF' button to get started"}
@@ -219,6 +212,7 @@ export default function PdfWallpaper() {
               input.onchange = async (e) => {
                 const file = (e.target as HTMLInputElement).files?.[0];
                 if (file) {
+                  setScale(1);
                   const reader = new FileReader();
                   reader.onload = (e) => {
                     const arrayBuffer = e.target?.result as ArrayBuffer;
