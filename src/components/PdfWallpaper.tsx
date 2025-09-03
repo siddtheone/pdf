@@ -21,6 +21,7 @@ import {
 } from "@mui/icons-material";
 import { Notice } from "./Notice";
 import { Overlay } from "./Overlay";
+import { Help } from "./Help";
 
 // Load the React-PDF host as a pure client-side dynamic import
 const ReactPdfHost = dynamic(() => import("./pdf/ReactPdfHost"), {
@@ -257,6 +258,8 @@ export default function PdfWallpaper() {
           >
             Zoom -
           </Button>
+
+          <Help />
 
           {(pdfUrl || localPdfData) && `Page ${currentPage} of ${numPages}`}
         </Paper>
