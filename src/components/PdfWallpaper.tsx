@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import { initGA, trackPdfAction } from "@/lib/analytics";
+import { gtagEvent, trackPdfAction } from "@/lib/analytics";
 import {
   Box,
   Button,
@@ -37,11 +37,6 @@ export default function PdfWallpaper() {
   const [localPdfData, setLocalPdfData] = useState<ArrayBuffer | null>(null);
   const [scale, setScale] = useState<number>(1);
 
-  // Initialize Google Analytics
-  useEffect(() => {
-    initGA();
-  }, []);
-
   // Get PDF URL from query parameter (only for hosted files, not local files)
   const queryPdfUrl = searchParams.get("file");
   // Only use URL if it's a valid HTTP/HTTPS URL, not a file:// URL
@@ -56,6 +51,7 @@ export default function PdfWallpaper() {
   }, []);
 
   const onDocumentLoadError = useCallback((error: unknown) => {
+    gtagEvent("error", "PDF load error");
     console.error("PDF load error", error);
   }, []);
 

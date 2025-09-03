@@ -2,86 +2,18 @@
 // Replace 'G-XXXXXXXXXX' with your actual Google Analytics Measurement ID
 export const GA_TRACKING_ID = "G-N36ERKP5Z4";
 
-// EU GDPR Compliance Notice
-// This application tracks user interactions for analytics purposes.
-// By using this application, you consent to the collection of anonymous usage data.
-// Data collected includes: PDF interactions (open, navigate, layout changes, overlay toggles)
-// No personal information or PDF content is transmitted or stored.
-// You can disable tracking by setting GA_TRACKING_ID to an empty string.
-
-// Initialize Google Analytics
-export const initGA = () => {
-  if (
-    typeof window !== "undefined" &&
-    (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
-  ) {
-    return;
-  }
-
-  // Load gtag script
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`;
-  document.head.appendChild(script);
-
-  // Initialize gtag
-  window.dataLayer = window.dataLayer || [];
-  function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
-  }
-  window.gtag = gtag;
-
-  gtag("js", new Date());
-  gtag("config", GA_TRACKING_ID, {
-    page_title: "PDF Wallpaper Viewer",
-    page_location: window.location.href,
-  });
-};
-
-// Track page views
-export const trackPageView = (url: string) => {
-  if (
-    typeof window !== "undefined" &&
-    (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
-  ) {
-    (window as Window & { gtag: (...args: unknown[]) => void }).gtag(
-      "config",
-      GA_TRACKING_ID,
-      {
-        page_path: url,
-      }
-    );
-  }
-};
-
-// Track custom events
-export const trackEvent = (
-  action: string,
-  category: string,
-  label?: string,
-  value?: number
-) => {
-  if (
-    typeof window !== "undefined" &&
-    (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
-  ) {
-    (window as Window & { gtag: (...args: unknown[]) => void }).gtag(
-      "event",
-      action,
-      {
-        event_category: category,
-        event_label: label,
-        value: value,
-      }
-    );
+// Send custom event
+export const gtagEvent = (action: string, params: string): void => {
+  if (typeof window !== "undefined" && (window as Window).gtag) {
+    window.gtag("event", "pdf_interaction", params);
   }
 };
 
 // Track PDF interactions
 export const trackPdfAction = (
-  action: "open" | "navigate prev" | "navigate next" | "overlay_toggle"
+  params: "open" | "navigate prev" | "navigate next" | "overlay_toggle"
 ) => {
-  trackEvent(action, "pdf_interaction", action);
+  gtagEvent("pdf_interaction", params);
 };
 
 // Declare global types
