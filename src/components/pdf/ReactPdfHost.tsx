@@ -4,6 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useRef } from "react";
 import { OnDocumentLoadSuccess } from "react-pdf/dist/shared/types.js";
 import "./ReactPdfHost.css";
+import { Skeleton as SkeletonMui } from "@mui/material";
 
 type Props = {
   file?: ArrayBuffer | string;
@@ -41,7 +42,14 @@ export default function ReactPdfHost({
       file={file}
       onLoadSuccess={onLoad}
       onLoadError={onLoadError}
-      loading={<>Loading…</>}
+      loading={
+        <SkeletonMui
+          variant="rectangular"
+          width="40%"
+          height={800}
+          sx={{ margin: "0 auto" }}
+        />
+      }
     >
       <Page
         key={currentPage}
