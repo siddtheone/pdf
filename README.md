@@ -1,119 +1,51 @@
 # PDF Wallpaper Viewer
 
-A beautiful, modern PDF viewer built with Next.js and Material-UI (MUI) designed to work as a desktop wallpaper application.
+A minimal PDF viewer built with Next.js and Material-UI designed for desktop wallpaper use. **All PDF processing happens locally in your browser** - no files are sent to external servers.
 
 ## Features
 
-- **Modern UI**: Built with Material-UI components and responsive design
-- **Theme Support**: Automatically adapts to light/dark system preferences
-- **Multiple Layouts**: Single page and two-page spread views
-- **Smart Navigation**: Full-height navigation buttons positioned next to PDF content
-- **Overlay Mode**: Toggle between PDF view and solid background overlay
-- **Query Parameter Loading**: Load PDFs from URL parameters or local files
-- **Responsive Design**: Works on different screen sizes and orientations
+- **Local Processing**: PDFs are rendered entirely in your browser using PDF.js
+- **Privacy First**: No files uploaded to servers - everything stays on your device
+- **Clean UI**: Material-UI components with automatic light/dark theme
+- **PDF Navigation**: Previous/next page controls
+- **Local & Remote Files**: Load PDFs from URLs or local file selection
+- **Overlay Mode**: Toggle solid background overlay
+- **Zoom Controls**: Scale PDF pages up/down
+- **Analytics**: Google Analytics integration (configurable)
 
 ## Usage
 
-### Loading PDFs via URL Parameters
-
-The app can load PDFs from query parameters in the URL:
-
-#### Remote PDFs
+### Remote PDFs
 
 ```
 http://localhost:3000/?file=https://example.com/document.pdf
 ```
 
-#### Local PDFs (placed in public/pdfs folder)
+### Local Files
 
-```
-http://localhost:3000/?file=document.pdf
-```
-
-### Manual File Selection
-
-You can also use the "Open PDF" button in the control bar to select a PDF file from your local machine.
+Use the "Open PDF" button to select files from your computer.
 
 ## Controls
 
-### Navigation
-
-- **Left/Right Buttons**: Navigate between pages
-- **Single Mode**: Navigate one page at a time
-- **Two-Page Mode**: Navigate two pages at a time (spread view)
-
-### Layout Controls
-
-- **Single/Two-Page Toggle**: Switch between single page and spread view
-- **Overlay Toggle**: Show/hide a solid background overlay
-- **Page Indicator**: Shows current page position
-
-## File Structure
-
-```
-src/
-├── app/
-│   ├── api/pdf/route.ts    # API route for serving local PDFs
-│   ├── globals.css         # Global styles
-│   ├── layout.tsx          # Root layout with MUI theme
-│   └── page.tsx            # Main page component
-├── components/
-│   ├── ClientThemeProvider.tsx  # MUI theme provider
-│   ├── PdfWallpaper.tsx         # Main PDF viewer component
-│   └── pdf/
-│       └── ReactPdfHost.tsx     # React-PDF wrapper component
-└── public/
-    └── pdfs/               # Directory for local PDF files
-```
+- **Navigation**: Left/right arrow buttons
+- **Overlay**: Show/hide solid background
+- **Zoom**: Scale PDF pages (0.5x to 2x)
+- **Page Counter**: Current page display
 
 ## Setup
 
-1. **Install dependencies**:
+```bash
+npm install
+npm run dev
+```
 
-   ```bash
-   npm install
-   ```
+## Configuration
 
-2. **Add PDF files** (optional):
-   Place PDF files in the `public/pdfs/` directory to serve them locally.
+Update `src/lib/analytics.ts` with your Google Analytics ID to enable tracking.
 
-3. **Run the development server**:
+## Tech Stack
 
-   ```bash
-   npm run dev
-   ```
-
-4. **Build for production**:
-   ```bash
-   npm run build
-   npm start
-   ```
-
-## API Endpoints
-
-### `/api/pdf`
-
-- **Method**: GET
-- **Parameters**: `file` - PDF filename (must be in public/pdfs directory)
-- **Returns**: PDF file with proper headers
-- **Security**: Only allows .pdf files
-
-## Technical Details
-
-- **Framework**: Next.js 15 with App Router
-- **UI Library**: Material-UI (MUI) v5
-- **PDF Rendering**: React-PDF with PDF.js
-- **Theme**: Automatic light/dark mode based on system preference
-- **Styling**: MUI's `sx` prop for component styling
-- **State Management**: React hooks (useState, useCallback, useMemo)
-- **File Handling**: Fetch API for remote files, Node.js fs for local files
-
-## Browser Support
-
-- Modern browsers with ES6+ support
-- Requires JavaScript enabled
-- PDF.js worker support
-
-## License
-
-MIT License
+- Next.js 15 (App Router)
+- Material-UI v5
+- React-PDF
+- TypeScript
